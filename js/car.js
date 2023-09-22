@@ -3,51 +3,66 @@ class Car {
     this.x = x;
     this.y = y;
     this.width = width;
-    this.height = height;
+    this.height = height; 
     
     this.speed = 0;
     this.maxSpeed = 6;
-    this.maxBackSpeed = 4;
+    this.maxBackSpeed = -2;
+
+    this.angle = 0;
     this.controls = new Controls();
   }
-  update() {
+  #move() {
+    //movement
     if(this.controls.space) {
-      if (this.speed > 0) {
-        if(this.speed >= 0.3) this.speed = (this.speed * 10 - 3) / 10;
-        else if(this.speed < 0.1) this.speed = 0;
-        else this.speed = (this.speed * 10 - 1) / 10;
-      } else if (this.speed < 0) {
-        if(this.speed <= 0.3) this.speed = (this.speed * 10 + 3) / 10;
-        else if(this.speed < 0.1) this.speed = 0;
+      if (this.speed < 0) {
+        if(this.speed >= 0.3) this.speed = (this.speed * 10 + 3) / 10;
         else this.speed = (this.speed * 10 + 1) / 10;
+      } else if (this.speed > 0) {
+        if(this.speed <= 0.3) this.speed = (this.speed * 10 - 3) / 10;
+        else this.speed = (this.speed * 10 - 1) / 10;
       }
-      this.y += this.speed;
     }
     else if(this.controls.forward) {
-      this.speed = (this.speed * 10 - 1) / 10;
-      this.speed = this.speed > this.maxSpeed ? this.maxSpeed : this.speed;
-      this.y += this.speed;
+      this.speed = (this.speed * 10 + 1) / 10 > this.maxSpeed ? this.maxSpeed : (this.speed * 10 + 1) / 10;
     } else if(this.controls.reverse) {
-      this.speed = (this.speed * 10 + 1) / 10;
-      this.speed = this.speed > this.maxBackSpeed ? this.maxBackSpeed : this.speed;
-      this.y += this.speed;
-    } else if (this.speed > 0) {
-      this.speed = (this.speed * 100 - 7) / 100;
-      this.y += this.speed;
+      this.speed = (this.speed * 10 - 1) / 10 <  this.maxBackSpeed ? this.maxBackSpeed : (this.speed * 10 - 1) / 10;
     } else if (this.speed < 0) {
       this.speed = (this.speed * 100 + 7) / 100;
-      this.y += this.speed;
+    } else if (this.speed > 0) {
+      this.speed = (this.speed * 100 - 7) / 100;
     }
+    if(Math.abs(this.speed) < 0.09) this.speed = 0;
+
+    this.x -= Math.sin(this.angle) * this.speed;
+    this.y -= Math.cos(this.angle) * this.speed;
+    
+    // rotate
+    if(this.controls.left) {
+      if(this.speed > 0.3) this.angle += 0.03;
+      else if(this.speed < -0.3) this.angle -= 0.03;
+    } 
+    if(this.controls.right) {
+      if(this.speed > 0.3) this.angle -= 0.027;
+      else if(this.speed < -0.3) this.angle += 0.027;
+    }
+  }
+  update() {
+    this.#move();
   }
 
   draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(-this.angle);
     ctx.beginPath();
     ctx.rect(
-      this.x-this.width/2,
-      this.y-this.height/2,
+      -this.width/2,
+      -this.height/2,
       this.width,
       this.height
     );
     ctx.fill();
+    ctx.restore();
   }
 }
