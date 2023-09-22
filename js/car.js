@@ -6,10 +6,12 @@ class Car {
     this.height = height; 
     
     this.speed = 0;
-    this.maxSpeed = 6;
+    this.maxSpeed = 9;
     this.maxBackSpeed = -2;
 
     this.angle = 0;
+
+    this.sensor = new Sensor(this);
     this.controls = new Controls();
   }
   #move() {
@@ -47,8 +49,9 @@ class Car {
       else if(this.speed < -0.3) this.angle += 0.027;
     }
   }
-  update() {
+  update(roadBorders) {
     this.#move();
+    this.sensor.update(roadBorders);
   }
 
   draw(ctx) {
@@ -64,5 +67,7 @@ class Car {
     );
     ctx.fill();
     ctx.restore();
+
+    this.sensor.draw(ctx);
   }
 }
