@@ -38,6 +38,13 @@ class Sensor {
         touches.push(touch);
       }
     }
+    if(touches.length == 0) {
+      return null;
+    } else {
+      const offsets = touches.map(e => e.offset);
+      const minOffset = Math.min(...offsets);
+      return touches.find(e => e.offset === minOffset);
+    }
   }
   
   update(roadBorders) {
@@ -45,13 +52,20 @@ class Sensor {
     this.readings = [];
     for(let i = 0; i < this.rays.length; i++) {
       this.readings.push(
-        this.getReadings(this.rays[i], roadBorders)
+        this.#getReadings(this.rays[i], roadBorders)
       )
     }
   }
 
   draw(ctx) {
     for(let i = 0; i < this.rayCount; i++) {
+      let end = this.rays[i][1];
+      if(this.readings[i]) {
+        end = this.readings[i];
+      }
+
+      // filled
+      if(this.readings[i]) {
       ctx.beginPath();
       ctx.lineWidth = 2;
       ctx.strokeStyle = 'yellow';
@@ -60,10 +74,34 @@ class Sensor {
         this.rays[i][0].y
       )
       ctx.lineTo(
-        this.rays[i][1].x,
-        this.rays[i][1].y
+        end.x,
+        end.y
       );
       ctx.stroke();
+      }
+
+      // background
+      // ctx.beginPath();
+      // ctx.lineWidth = 2;
+      // ctx.strokeStyle = 'grey';
+      // ctx.moveTo(
+      //   this.rays[i][1].x,
+      //   this.rays[i][1].y
+      // )
+      // ctx.lineTo(
+      //   end.x,
+      //   end.y
+      // );
+      // ctx.stroke();
+
+      //Circle
+      if(this.readings[i]) {
+        ctx.beginPath();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'yellow';
+        ctx.arc(end.x, end.y, 5, 0, Math.PI * 2)
+        ctx.stroke();
+      }
     }
   }
 }
