@@ -1,5 +1,5 @@
 class Car {
-  constructor(x, y, width, height) {
+  constructor(x, y, width, height, controlType, maxSpeed = 3) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -8,13 +8,15 @@ class Car {
     this.damaged = false;
     
     this.speed = 0;
-    this.maxSpeed = 11;
+    this.maxSpeed = maxSpeed;
     this.maxBackSpeed = -2;
 
     this.angle = 0;
 
-    this.sensor = new Sensor(this);
-    this.controls = new Controls();
+    if(controlType !== 'DUMMY') {
+      this.sensor = new Sensor(this);
+    }
+    this.controls = new Controls(controlType);
   }
   #createPolygon() {
     const points = [];
@@ -29,12 +31,12 @@ class Car {
       y: this.y - Math.cos(this.angle + alpha) * rad,
     });
     points.push({
-      x: this.x - Math.sin(Math.PI + this.angle - alpha) * rad * 1.3,
-      y: this.y - Math.cos(Math.PI + this.angle - alpha) * rad * 1.3,
+      x: this.x - Math.sin(Math.PI + this.angle - alpha) * rad,
+      y: this.y - Math.cos(Math.PI + this.angle - alpha) * rad,
     });
     points.push({
-      x: this.x - Math.sin(Math.PI + this.angle + alpha) * rad * 1.3,
-      y: this.y - Math.cos(Math.PI + this.angle + alpha) * rad * 1.3,
+      x: this.x - Math.sin(Math.PI + this.angle + alpha) * rad,
+      y: this.y - Math.cos(Math.PI + this.angle + alpha) * rad,
     });
     return points;
   }
@@ -73,15 +75,23 @@ class Car {
       else if(this.speed < -0.3) this.angle += 0.027;
     }
   }
-  update(roadBorders) {
-    this.#move();
-    this.polygon = this.#createPolygon();
-    this.damaged = this.assessDamage(roadBorders);
-    this.sensor.update(roadBorders);
+  update(roadBorders, traffic) {
+    if(!this.damaged) {
+      this.#move();
+      this.polygon = this.#createPolygon();
+      this.damaged = this.assessDamage(roadBorders, traffic);
+    }
+    this.sensor?.update(roadBorders);
+    // this.sensor?.update(traffic);
   }
-  assessDamage(roadBorders) {
+  assessDamage(roadBorders, traffic) {
     for(let i = 0; i < roadBorders.length; i++) {
       if(polysIntersect(this.polygon, roadBorders[i])) {
+        return true;
+      }
+    }
+    for(let i = 0; i < traffic.length; i++) {
+      if(polysIntersect(this.polygon, traffic[i].polygon)) {
         return true;
       }
     }
@@ -99,6 +109,6 @@ class Car {
     }
     ctx.fill();
 
-    this.sensor.draw(ctx);
+    this.sensor?.draw(ctx);
   }
 }
