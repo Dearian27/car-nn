@@ -6,7 +6,7 @@ class Car {
     this.height = height; 
     
     this.speed = 0;
-    this.maxSpeed = 9;
+    this.maxSpeed = 11;
     this.maxBackSpeed = -2;
 
     this.angle = 0;
@@ -14,15 +14,18 @@ class Car {
     this.sensor = new Sensor(this);
     this.controls = new Controls();
   }
+  #createPolygon() {
+    
+  }
   #move() {
     //movement
     if(this.controls.space) {
       if (this.speed < 0) {
-        if(this.speed >= 0.3) this.speed = (this.speed * 10 + 3) / 10;
-        else this.speed = (this.speed * 10 + 1) / 10;
+        if(this.speed <= 1.5) this.speed -= this.speed/10;
+        else this.speed -= this.speed/20;
       } else if (this.speed > 0) {
-        if(this.speed <= 0.3) this.speed = (this.speed * 10 - 3) / 10;
-        else this.speed = (this.speed * 10 - 1) / 10;
+        if(this.speed >= 3) this.speed -= this.speed/20;
+        else this.speed -= this.speed/10;
       }
     }
     else if(this.controls.forward) {
