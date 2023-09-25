@@ -14,13 +14,13 @@ const car = new Car(road.getLaneCenter(2), 100, 30, 50, 'AI', 11);
 // const car = new Car(road.getLaneCenter(2), 100, 30, 50, 'KEYS', 11);
 
 const traffic = [
-  // new Car(road.getLaneCenter(1), -100, 30, 50, 'DUMMY'),
-  // new Car(road.getLaneCenter(3), -400, 30, 50, 'DUMMY'),
+   new Car(road.getLaneCenter(1), -100, 30, 50, 'DUMMY'),
+   new Car(road.getLaneCenter(3), -400, 30, 50, 'DUMMY'),
   new Car(road.getLaneCenter(2), 0, 30, 50, 'DUMMY'),
-  // new Car(road.getLaneCenter(3), -250, 30, 50, 'DUMMY'),
-  // new Car(road.getLaneCenter(0), -150, 30, 50, 'DUMMY'),
-  // new Car(road.getLaneCenter(0), -400, 30, 50, 'DUMMY'),
-  // new Car(road.getLaneCenter(1), -500, 30, 50, 'DUMMY'),
+   new Car(road.getLaneCenter(3), -250, 30, 50, 'DUMMY'),
+  new Car(road.getLaneCenter(0), -150, 30, 50, 'DUMMY'),
+   new Car(road.getLaneCenter(0), -400, 30, 50, 'DUMMY'),
+   new Car(road.getLaneCenter(1), -500, 30, 50, 'DUMMY'),
 ]
 
 function animate() {
