@@ -10,17 +10,25 @@ const networkCtx = carCanvas.getContext('2d');
 const carCtx = carCanvas.getContext('2d');
 
 const road = new Road(carCanvas.width/2, carCanvas.width*0.9);
-const car = new Car(road.getLaneCenter(2), 100, 30, 50, 'AI', 11);
-// const car = new Car(road.getLaneCenter(2), 100, 30, 50, 'KEYS', 11);
+// const car = new Car(road.getLaneCenter(2), 100, 35, 60, 'AI', 11);
+const car = new Car(road.getLaneCenter(2), 100,  35, 60, 'KEYS', 11);
 
 const traffic = [
-   new Car(road.getLaneCenter(1), -100, 30, 50, 'DUMMY'),
-   new Car(road.getLaneCenter(3), -400, 30, 50, 'DUMMY'),
-  new Car(road.getLaneCenter(2), 0, 30, 50, 'DUMMY'),
-   new Car(road.getLaneCenter(3), -250, 30, 50, 'DUMMY'),
-  new Car(road.getLaneCenter(0), -150, 30, 50, 'DUMMY'),
-   new Car(road.getLaneCenter(0), -400, 30, 50, 'DUMMY'),
-   new Car(road.getLaneCenter(1), -500, 30, 50, 'DUMMY'),
+   new Car(road.getLaneCenter(1), -100,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(3), -400,  35, 60, 'DUMMY'),
+  new Car(road.getLaneCenter(2), 0,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(3), -250,  35, 60, 'DUMMY'),
+  new Car(road.getLaneCenter(0), -150,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(0), -400,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(1), -500,  35, 60, 'DUMMY'),
+
+   new Car(road.getLaneCenter(1), -650,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(3), -750,  35, 60, 'DUMMY'),
+  new Car(road.getLaneCenter(2), -310,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(3), -580,  35, 60, 'DUMMY'),
+  new Car(road.getLaneCenter(0), -690,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(0), -800,  35, 60, 'DUMMY'),
+   new Car(road.getLaneCenter(1), -780,  35, 60, 'DUMMY'),
 ]
 
 function animate() {

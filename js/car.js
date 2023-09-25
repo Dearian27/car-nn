@@ -5,7 +5,16 @@ class Car {
     this.width = width;
     this.height = height; 
     this.polygon = [];
-    this.image = randCar(playerCars);
+    if(controlType === 'DUMMY') {
+      const img = new Image();
+      img.src = randCar(botCars)
+      this.image = img;
+      
+    } else {
+      const img = new Image();
+      img.src = randCar(playerCars)
+      this.image = img;
+    }
     this.damaged = false;
     
     this.speed = 0;
@@ -109,7 +118,6 @@ class Car {
     }
     for(let i = 0; i < traffic.length; i++) {
       if(polysIntersect(this.polygon, traffic[i].polygon)) {
-        setTimeout(() => window.location.reload(), 1400)
         return true;
       }
     }
@@ -117,15 +125,29 @@ class Car {
   }
 
   draw(ctx) {
-    if(this.damaged) {
-      ctx.fillStyle = 'gray';
-    } else ctx.fillStyle = 'black';
+    // if(this.damaged) {
+    //   ctx.fillStyle = 'gray';
+    // } else ctx.fillStyle = 'black';
+    // ctx.beginPath();
+    // ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
+    // for(let i = 1; i < this.polygon.length; i++) {
+    //   ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
+    // }
+    // ctx.stroke();
+    // ctx.fill();
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(-this.angle);
     ctx.beginPath();
-    ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
-    for(let i = 1; i < this.polygon.length; i++) {
-      ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
-    }
+    ctx.drawImage(
+      this.image,
+      -this.width/2,
+      -this.height/2,
+      this.width,
+      this.height
+    );
     ctx.fill();
+    ctx.restore();
 
     this.sensor?.draw(ctx);
   }
