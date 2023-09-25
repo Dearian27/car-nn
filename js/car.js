@@ -5,6 +5,7 @@ class Car {
     this.width = width;
     this.height = height; 
     this.polygon = [];
+    this.image = randCar(playerCars);
     this.damaged = false;
     
     this.speed = 0;

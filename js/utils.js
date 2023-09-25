@@ -36,3 +36,7 @@ const polysIntersect = (poly1, poly2) => {
   }
   return false
 }
+
+const randCar = (arr) => {
+  return Math.floor(Math.random() * arr.length); 
+}

@@ -1,0 +1,7 @@
+const playerCars = [
+
+];
+
+const botCars = [
+  
+];
