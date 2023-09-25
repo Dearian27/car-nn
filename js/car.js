@@ -124,7 +124,7 @@ class Car {
     return false;
   }
 
-  draw(ctx) {
+  draw(ctx, drawSensors) {
     // if(this.damaged) {
     //   ctx.fillStyle = 'gray';
     // } else ctx.fillStyle = 'black';
@@ -149,6 +149,8 @@ class Car {
     ctx.fill();
     ctx.restore();
 
-    this.sensor?.draw(ctx);
+    if(drawSensors) {
+      this.sensor?.draw(ctx);
+    }
   }
 }

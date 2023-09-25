@@ -40,3 +40,11 @@ const polysIntersect = (poly1, poly2) => {
 const randCar = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)]; 
 }
+
+const getRGBA = (value) => {
+  const alpha = Math.abs(value);
+  const R = value < 0 ? 0 : 255;
+  const G = value < 0 ? 0 : 155;
+  const B = value > 0 ? 0 : 255;
+  return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
+}
