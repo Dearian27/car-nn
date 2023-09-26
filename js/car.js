@@ -5,6 +5,7 @@ class Car {
     this.width = width;
     this.height = height; 
     this.polygon = [];
+    this.triggersTouch = [];
     if(controlType === 'DUMMY') {
       const img = new Image();
       img.src = randCar(botCars)
@@ -23,6 +24,9 @@ class Car {
 
     this.angle = 0;
 
+    if(controlType !== 'DUMMY') {
+      this.credit = 0;
+    }
     this.useBrain = controlType == 'AI';
     if(controlType !== 'DUMMY') {
       this.sensor = new Sensor(this);
@@ -87,6 +91,30 @@ class Car {
     if(this.controls.right) {
       if(this.speed > 0.3) this.angle -= 0.027;
       else if(this.speed < -0.3) this.angle += 0.027;
+    }
+  }
+  triggerIntersection(triggers, save) {
+    // for(let i = 0; i < triggers.length; i++) {
+    //   if(this.triggersTouch.includes(i)) {
+    //     return;
+    //   }
+    //   if(polysIntersect(this.polygon, triggers[i])) {
+    //     return true;
+    //   }
+    // }
+    for(let i = 0; i < triggers.length; i++) {
+      // for(let j = 0; j < this.polygon.length; j++) {
+        if(this.triggersTouch.includes(i)) {
+          return;
+        }
+
+        if(triggers[i].y > this.y) {
+          this.triggersTouch.push(i);
+          this.credit += 1;
+          console.log(this.credit)
+          debounce(() => save());
+        }
+      // }
     }
   }
   update(roadBorders, traffic) {

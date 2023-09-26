@@ -48,3 +48,11 @@ const getRGBA = (value) => {
   const B = value > 0 ? 0 : 255;
   return "rgba(" + R + ", " + G + ", " + B + ", " + alpha + ")";
 }
+
+function debounce(func, timeout = 4000){
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}
