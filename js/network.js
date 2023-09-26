@@ -21,9 +21,10 @@ class NeuralNetwork {
 
   static mutate(network, amount=1) {
     network.levels.forEach(level => {
-      for(let i = 0; i < level.biases; i++) {
+      for(let i = 0; i < level.biases.length; i++) {
         level.biases[i] = lerp(
-          level.biases[i], Math.random() * 2 - 1,
+          level.biases[i], 
+          Math.random() * 2 - 1,
           amount
         )
       }

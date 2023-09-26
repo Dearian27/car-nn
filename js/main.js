@@ -42,9 +42,20 @@ const save = () => {
   // console.log('save', JSON.stringify(bestCar.brain));
   window.location.reload();
 }
+
 const discard = () => {
   localStorage.removeItem('bestBrain');
 }
+
+function startTouchTimer() {
+  touchTimer = setTimeout(save, 6000); 
+}
+
+function resetTouchTimer() {
+  clearTimeout(touchTimer);
+  startTouchTimer();
+}
+startTouchTimer();
 
 const generateCars = (N) => {
   const cars = [];
@@ -61,7 +72,7 @@ if(localStorage.getItem("bestBrain")) {
   for(let i = 0; i < cars.length; i++) {
     cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'));
     if(i != 0) {
-      NeuralNetwork.mutate(cars[i].brain, 0.6);
+      NeuralNetwork.mutate(cars[i].brain, 0.1);
     }
   }
 }
@@ -72,12 +83,12 @@ function animate(time) {
   }
   
   for(car of cars) {
-    car.triggerIntersection(triggers, save);
+    car.triggerIntersection(triggers);
     car.update(road.borders, traffic);
   }
+
   const bestCar = (function() {
     const carsWithMaxCredit = cars.filter(c => c.credit === Math.max(...cars.map(c => c.credit)));
-    
     if (carsWithMaxCredit.length === 1) {
       return carsWithMaxCredit[0];
     } else {
@@ -124,3 +135,6 @@ function animate(time) {
 }
 
 animate()
+
+console.log(triggers)
+console.log(triggers.length)
