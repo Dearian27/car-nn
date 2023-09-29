@@ -17,6 +17,15 @@ inputN.onchange = (event) => {
 }
 let N = inputN.value;
 
+const inputK = document.getElementById('inputK');
+if(localStorage.getItem('inputK')) {
+  inputK.value = localStorage.getItem('inputK');
+}
+inputK.onchange = (event) => {
+  inputK.value = localStorage.setItem('inputK', event.target.value);
+}
+let K = inputK.value;
+
 // const car = new Car(road.getLaneCenter(2), 100,  35, 60, 'KEYS', 11);
 const road = new Road(0, 0);
 
@@ -89,7 +98,7 @@ if(localStorage.getItem("bestBrain")) {
   for(let i = 0; i < cars.length; i++) {
     cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'));
     if(i != 0) {
-      NeuralNetwork.mutate(cars[i].brain, 0.2);
+      NeuralNetwork.mutate(cars[i].brain, K);
     }
   }
 }
