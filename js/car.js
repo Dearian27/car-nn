@@ -93,7 +93,7 @@ class Car {
   }
   triggerIntersection(triggers) {
     for(let i = 0; i < triggers.length; i++) {
-        if(!this.triggersTouch.includes(i) && triggers[i].y > this.y) {
+        if(!this.triggersTouch.includes(i)) {
           this.triggersTouch.push(i);
           this.credit += 1;
           console.log(this.credit)

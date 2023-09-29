@@ -8,6 +8,14 @@ networkCanvas.height = window.innerHeight;
 networkCanvas.width = 300;
 const networkCtx = networkCanvas.getContext('2d');
 
+const inputN = document.getElementById('inputN');
+if(localStorage.getItem('inputN')) {
+  inputN.value = localStorage.getItem('inputN');
+}
+inputN.onchange = (event) => {
+  inputN.value = localStorage.setItem('inputN', event.target.value);
+}
+let N = inputN.value;
 
 // const car = new Car(road.getLaneCenter(2), 100,  35, 60, 'KEYS', 11);
 const road = new Road(0, 0);
@@ -38,6 +46,7 @@ triggers.push(new Trigger(carCanvas, road.borders[0][5], road.borders[1][5]))
 triggers.push(new Trigger(carCanvas, road.borders[0][6], road.borders[1][6]))
 triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][7]))
 triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][8]))
+triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][9]))
 triggers.push(new Trigger(carCanvas, road.borders[0][8], road.borders[1][9]))
 triggers.push(new Trigger(carCanvas, road.borders[0][8], road.borders[1][10]))
 
@@ -53,13 +62,13 @@ const discard = () => {
   localStorage.removeItem('bestBrain');
 }
 
-function startTouchTimer(time = 4000) {
+function startTouchTimer(time = 7000) {
   touchTimer = setTimeout(save, time); 
 }
 
 function resetTouchTimer() {
   clearTimeout(touchTimer);
-  startTouchTimer(5000);
+  startTouchTimer(7000);
 }
 startTouchTimer();
 
@@ -72,7 +81,6 @@ const generateCars = (N) => {
   return cars;
 }
 
-const N = 27;
 const cars = generateCars(N);
 let bestCar = cars[0];
 if(localStorage.getItem("bestBrain")) {
