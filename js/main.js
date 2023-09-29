@@ -52,7 +52,6 @@ triggers.push(new Trigger(carCanvas, road.borders[0][8], road.borders[1][10]))
 
 
 const save = () => {
-  console.log('save')
   localStorage.setItem('bestBrain', JSON.stringify(bestCar.brain));
   // console.log('save', JSON.stringify(bestCar.brain));
   window.location.reload();
@@ -76,7 +75,7 @@ const generateCars = (N) => {
   const cars = [];
   // cars.push(new Car(0, 0, 35, 60, 'KEYS', 11));
   for(let i = 0; i < N; i++) {
-    cars.push(new Car(0, 0, 35, 60, 'AI', 5));
+    cars.push(new Car(0, 0, 35, 60, 'AI', 7));
   }
   return cars;
 }
