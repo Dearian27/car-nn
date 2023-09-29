@@ -51,6 +51,21 @@ const roadIntersect = (car, roadside) => {
   }
 }
 
+const triggerIntersect = (car, triggers) => {
+  for(let i = 0; i < car.length; i++) {
+    for(let j = 0; j < triggers.length; j++) {
+      const touch = getIntersection(
+        car[i],
+        car[(i + 1) % car.length],
+        triggers[j].point1,
+        triggers[j].point2
+      )
+      if(touch) return j;
+    }
+  }
+  return false
+}
+
 const randCar = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)]; 
 }

@@ -62,13 +62,13 @@ const discard = () => {
   localStorage.removeItem('bestBrain');
 }
 
-function startTouchTimer(time = 7000) {
+function startTouchTimer(time = 5000) {
   touchTimer = setTimeout(save, time); 
 }
 
 function resetTouchTimer() {
   clearTimeout(touchTimer);
-  startTouchTimer(7000);
+  startTouchTimer(5000);
 }
 startTouchTimer();
 
@@ -76,7 +76,7 @@ const generateCars = (N) => {
   const cars = [];
   // cars.push(new Car(0, 0, 35, 60, 'KEYS', 11));
   for(let i = 0; i < N; i++) {
-    cars.push(new Car(0, 0, 35, 60, 'AI', 7));
+    cars.push(new Car(0, 0, 35, 60, 'AI', 5));
   }
   return cars;
 }
@@ -99,18 +99,18 @@ function animate(time) {
     car.update(road.borders);
   }
 
-  const bestCar = (function() {
-    const carsWithMaxCredit = cars.filter(c => c.credit === Math.max(...cars.map(c => c.credit)));
-    if (carsWithMaxCredit.length === 1) {
-      return carsWithMaxCredit[0];
-    } else {
-      const minYCar = carsWithMaxCredit.reduce((minY, currentCar) => {
-        return currentCar.y < minY.y ? currentCar : minY;
-      });
-      return minYCar;
-    }
-  })();
-  // const bestCar = function() {return cars.find(c => c.credit == Math.max(...cars.map(c => c.credit)))}();
+  // const bestCar = (function() {
+  //   const carsWithMaxCredit = cars.filter(c => c.credit === Math.max(...cars.map(c => c.credit)));
+  //   if (carsWithMaxCredit.length === 1) {
+  //     return carsWithMaxCredit[0];
+  //   } else {
+  //     const minYCar = carsWithMaxCredit.reduce((minY, currentCar) => {
+  //       return currentCar.y < minY.y ? currentCar : minY;
+  //     });
+  //     return minYCar;
+  //   }
+  // })();
+  const bestCar = function() {return cars.find(c => c.credit == Math.max(...cars.map(c => c.credit)))}();
 
   carCanvas.height = window.innerHeight;
   
@@ -122,7 +122,7 @@ function animate(time) {
   carCtx.save();
   
   // carCtx.translate(0, -bestCar.y+carCanvas.height * 0.7)
-  carCtx.translate(-cars[0].x + carCanvas.width * 0.5, -cars[0].y + carCanvas.height * 0.5);
+  carCtx.translate(-bestCar.x + carCanvas.width * 0.5, -bestCar.y + carCanvas.height * 0.5);
 
   road.draw(carCtx);
   
