@@ -54,7 +54,10 @@ triggers.push(new Trigger(carCanvas, road.borders[0][8], road.borders[1][10]))
 const save = () => {
   localStorage.setItem('bestBrain', JSON.stringify(bestCar.brain));
   // console.log('save', JSON.stringify(bestCar.brain));
-  window.location.reload();
+  // console.log(bestCar.credit, !!localStorage.getItem('bestBrain'));
+  setTimeout(() => {
+    window.location.reload();
+  }, 3000);
 }
 
 const discard = () => {
@@ -75,7 +78,7 @@ const generateCars = (N) => {
   const cars = [];
   // cars.push(new Car(0, 0, 35, 60, 'KEYS', 11));
   for(let i = 0; i < N; i++) {
-    cars.push(new Car(0, 0, 35, 60, 'AI', 7));
+    cars.push(new Car(0, 0, 35, 60, 'AI', 5));
   }
   return cars;
 }
@@ -86,7 +89,7 @@ if(localStorage.getItem("bestBrain")) {
   for(let i = 0; i < cars.length; i++) {
     cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'));
     if(i != 0) {
-      NeuralNetwork.mutate(cars[i].brain, 0.4);
+      NeuralNetwork.mutate(cars[i].brain, 0.2);
     }
   }
 }
@@ -98,19 +101,8 @@ function animate(time) {
     car.update(road.borders);
   }
 
-  // const bestCar = (function() {
-  //   const carsWithMaxCredit = cars.filter(c => c.credit === Math.max(...cars.map(c => c.credit)));
-  //   if (carsWithMaxCredit.length === 1) {
-  //     return carsWithMaxCredit[0];
-  //   } else {
-  //     const minYCar = carsWithMaxCredit.reduce((minY, currentCar) => {
-  //       return currentCar.y < minY.y ? currentCar : minY;
-  //     });
-  //     return minYCar;
-  //   }
-  // })();
-  const bestCar = function() {return cars.find(c => c.credit == Math.max(...cars.map(c => c.credit)))}();
-
+  bestCar = function() {return cars.find(c => c.credit == Math.max(...cars.map(c => c.credit)))}();
+  // console.log('bestCar', bestCar.credit);
   carCanvas.height = window.innerHeight;
   
 

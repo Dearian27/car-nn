@@ -39,13 +39,11 @@ class Road {
           ctx.beginPath();
           ctx.lineWidth = 5;
           ctx.strokeStyle = "orange";
-          ctx.setLineDash([5, 5]);
           ctx.moveTo(this.borders[i][j].x, this.borders[i][j].y);
           ctx.lineTo(this.borders[i][j+1].x, this.borders[i][j+1].y);
           ctx.stroke();
         }
       }
-      ctx.setLineDash([0, 0]);
     }
 
     // this.borders.forEach((side, index1) => {
