@@ -1,6 +1,6 @@
 const carCanvas = document.getElementById('carCanvas');
 carCanvas.height = window.innerHeight;
-carCanvas.width = 260;
+carCanvas.width = 700;
 const carCtx = carCanvas.getContext('2d');
 
 const networkCanvas = document.getElementById('networkCanvas');
@@ -10,30 +10,36 @@ const networkCtx = networkCanvas.getContext('2d');
 
 
 // const car = new Car(road.getLaneCenter(2), 100,  35, 60, 'KEYS', 11);
-const road = new Road(carCanvas.width/2, carCanvas.width*0.9);
+const road = new Road(0, 0);
 
 const traffic = [
-  new Car(road.getLaneCenter(1), -100,  35, 60, 'DUMMY'),
-  new Car(road.getLaneCenter(3), -400,  35, 60, 'DUMMY'),
-  new Car(road.getLaneCenter(2), 0,  35, 60, 'DUMMY'),
-  new Car(road.getLaneCenter(3), -250,  35, 60, 'DUMMY'),
-  // new Car(road.getLaneCenter(0), -150,  35, 60, 'DUMMY'),
-  new Car(road.getLaneCenter(0), -400,  35, 60, 'DUMMY'),
-  new Car(road.getLaneCenter(1), -500,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(1), -100,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(3), -400,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(2), 0,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(3), -250,  35, 60, 'DUMMY'),
+  // // new Car(road.getLaneCenter(0), -150,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(0), -400,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(1), -500,  35, 60, 'DUMMY'),
 
-   new Car(road.getLaneCenter(1), -650,  35, 60, 'DUMMY'),
-   new Car(road.getLaneCenter(3), -750,  35, 60, 'DUMMY'),
-  new Car(road.getLaneCenter(2), -310,  35, 60, 'DUMMY'),
-   new Car(road.getLaneCenter(3), -580,  35, 60, 'DUMMY'),
-  new Car(road.getLaneCenter(0), -690,  35, 60, 'DUMMY'),
-   new Car(road.getLaneCenter(0), -800,  35, 60, 'DUMMY'),
-   new Car(road.getLaneCenter(1), -780,  35, 60, 'DUMMY'),
+  //  new Car(road.getLaneCenter(1), -650,  35, 60, 'DUMMY'),
+  //  new Car(road.getLaneCenter(3), -750,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(2), -310,  35, 60, 'DUMMY'),
+  //  new Car(road.getLaneCenter(3), -580,  35, 60, 'DUMMY'),
+  // new Car(road.getLaneCenter(0), -690,  35, 60, 'DUMMY'),
+  //  new Car(road.getLaneCenter(0), -800,  35, 60, 'DUMMY'),
+  //  new Car(road.getLaneCenter(1), -780,  35, 60, 'DUMMY'),
 ]
 
 const triggers = [];
-for(let i = 0; i < 15; i++) {
-  triggers.push(new Trigger(carCanvas, 0 - i * 100, 3));
-}
+triggers.push(new Trigger(carCanvas, road.borders[0][2], road.borders[1][2]))
+triggers.push(new Trigger(carCanvas, road.borders[0][3], road.borders[1][3]))
+triggers.push(new Trigger(carCanvas, road.borders[0][4], road.borders[1][4]))
+triggers.push(new Trigger(carCanvas, road.borders[0][5], road.borders[1][5]))
+triggers.push(new Trigger(carCanvas, road.borders[0][6], road.borders[1][6]))
+triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][7]))
+triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][8]))
+triggers.push(new Trigger(carCanvas, road.borders[0][8], road.borders[1][9]))
+triggers.push(new Trigger(carCanvas, road.borders[0][8], road.borders[1][10]))
 
 
 const save = () => {
@@ -47,44 +53,42 @@ const discard = () => {
   localStorage.removeItem('bestBrain');
 }
 
-function startTouchTimer() {
-  touchTimer = setTimeout(save, 6000); 
+function startTouchTimer(time = 4000) {
+  touchTimer = setTimeout(save, time); 
 }
 
 function resetTouchTimer() {
   clearTimeout(touchTimer);
-  startTouchTimer();
+  startTouchTimer(5000);
 }
 startTouchTimer();
 
 const generateCars = (N) => {
   const cars = [];
+  // cars.push(new Car(0, 0, 35, 60, 'KEYS', 11));
   for(let i = 0; i < N; i++) {
-    cars.push(new Car(road.getLaneCenter(2), 100, 35, 60, 'AI', 11));
+    cars.push(new Car(0, 0, 35, 60, 'AI', 7));
   }
   return cars;
 }
 
-const N = 50;
+const N = 27;
 const cars = generateCars(N);
 let bestCar = cars[0];
 if(localStorage.getItem("bestBrain")) {
   for(let i = 0; i < cars.length; i++) {
     cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'));
     if(i != 0) {
-      NeuralNetwork.mutate(cars[i].brain, 0.1);
+      NeuralNetwork.mutate(cars[i].brain, 0.5);
     }
   }
 }
 
 function animate(time) {
-  for(let i = 0; i < traffic.length; i++) {
-    traffic[i].update(road.borders, []);
-  }
-  
+
   for(car of cars) {
     car.triggerIntersection(triggers);
-    car.update(road.borders, traffic);
+    car.update(road.borders);
   }
 
   const bestCar = (function() {
@@ -109,7 +113,9 @@ function animate(time) {
 
   carCtx.save();
   
-  carCtx.translate(0, -bestCar.y+carCanvas.height * 0.7)
+  // carCtx.translate(0, -bestCar.y+carCanvas.height * 0.7)
+  carCtx.translate(-cars[0].x + carCanvas.width * 0.5, -cars[0].y + carCanvas.height * 0.5);
+
   road.draw(carCtx);
   
   carCtx.globalAlpha = 0.2;
@@ -136,5 +142,5 @@ function animate(time) {
 
 animate()
 
-console.log(triggers)
-console.log(triggers.length)
+// console.log(triggers)
+// console.log(triggers.length)

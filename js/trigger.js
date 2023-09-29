@@ -1,22 +1,22 @@
 class Trigger {
-  constructor(canvas, y, speed = 3) {
-    this.width = canvas.width;
-    this.y = y;
-    this.x = 0;
-    this.speed = speed;
+  constructor(canvas, point1, point2) {
+    this.x1 = point1.x;
+    this.y1 = point1.y;
+    this.x2 = point2.x;
+    this.y2 = point2.y;
   }
 
   update() {
-    this.y -= this.speed;
+    // this.y -= this.speed;
   }
 
   draw(ctx) {
     ctx.setLineDash([6, 6]);
-    ctx.strokeStyle = 'yellow';
-    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'green';
+    ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.moveTo(0, this.y);
-    ctx.lineTo(this.width, this.y);
+    ctx.moveTo(this.x1, this.y1);
+    ctx.lineTo(this.x2, this.y2);
     ctx.stroke();
   }
 }

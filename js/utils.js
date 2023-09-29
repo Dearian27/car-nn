@@ -37,6 +37,20 @@ const polysIntersect = (poly1, poly2) => {
   return false
 }
 
+const roadIntersect = (car, roadside) => {
+  for(let i = 0; i < car.length; i++) {
+    for(let j = 0; j < roadside.length-1; j++) {
+      const touch = getIntersection(
+        car[i],
+        car[(i + 1) % car.length],
+        roadside[j],
+        roadside[j+1]
+      )
+      if(touch) return touch;
+    }
+  }
+}
+
 const randCar = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)]; 
 }

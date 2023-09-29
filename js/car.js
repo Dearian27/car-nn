@@ -24,7 +24,7 @@ class Car {
 
     this.angle = 0;
     this.credit = 0;
-    
+
     this.useBrain = controlType == 'AI';
     if(controlType !== 'DUMMY') {
       this.sensor = new Sensor(this);
@@ -93,29 +93,23 @@ class Car {
   }
   triggerIntersection(triggers) {
     for(let i = 0; i < triggers.length; i++) {
-      // for(let j = 0; j < this.polygon.length; j++) {
-        if(this.triggersTouch.includes(i)) {
-          return;
-        }
-
-        if(triggers[i].y > this.y) {
+        if(!this.triggersTouch.includes(i) && triggers[i].y > this.y) {
           this.triggersTouch.push(i);
           this.credit += 1;
           console.log(this.credit)
           resetTouchTimer();
         }
-      // }
     }
   }
-  update(roadBorders, traffic) {
+  update(roadBorders) {
     if(!this.damaged) {
       this.#move();
       this.polygon = this.#createPolygon();
-      this.damaged = this.assessDamage(roadBorders, traffic);
+      this.damaged = this.assessDamage(roadBorders);
     }
 
     if(this.sensor) {
-      this.sensor.update(roadBorders, traffic);
+      this.sensor.update(roadBorders);
       const offsets = this.sensor.readings.map(
         s => s == null ? 0 : 1 - s.offset
       )
@@ -128,44 +122,43 @@ class Car {
       }
     }
   }
-  assessDamage(roadBorders, traffic) {
+  assessDamage(roadBorders) {
     for(let i = 0; i < roadBorders.length; i++) {
-      if(polysIntersect(this.polygon, roadBorders[i])) {
-        return true;
-      }
-    }
-    for(let i = 0; i < traffic.length; i++) {
-      if(polysIntersect(this.polygon, traffic[i].polygon)) {
-        return true;
+      for(let j = 0; j < roadBorders[i].length; j++) {
+        if(roadIntersect(this.polygon, roadBorders[i])) {
+          return true;
+        }
       }
     }
     return false;
   }
 
   draw(ctx, drawSensors) {
-    // if(this.damaged) {
-    //   ctx.fillStyle = 'gray';
-    // } else ctx.fillStyle = 'black';
-    // ctx.beginPath();
-    // ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
-    // for(let i = 1; i < this.polygon.length; i++) {
-    //   ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
-    // }
-    // ctx.stroke();
-    // ctx.fill();
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(-this.angle);
+    if(this.damaged) {
+      ctx.fillStyle = 'gray';
+    } else ctx.fillStyle = 'black';
     ctx.beginPath();
-    ctx.drawImage(
-      this.image,
-      -this.width/2,
-      -this.height/2,
-      this.width,
-      this.height
-    );
-    ctx.fill();
-    ctx.restore();
+    ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
+    for(let i = 1; i < this.polygon.length; i++) {
+      ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
+    }
+    ctx.lineTo(this.polygon[0].x, this.polygon[0].y);
+    ctx.stroke();
+    // ctx.fill();
+
+    // ctx.save();
+    // ctx.translate(this.x, this.y);
+    // ctx.rotate(-this.angle);
+    // ctx.beginPath();
+    // ctx.drawImage(
+    //   this.image,
+    //   -this.width/2,
+    //   -this.height/2,
+    //   this.width,
+    //   this.height
+    // );
+    // ctx.fill();
+    // ctx.restore();
 
     if(drawSensors) {
       this.sensor?.draw(ctx);
