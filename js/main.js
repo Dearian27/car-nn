@@ -57,11 +57,13 @@ triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][7]))
 triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][8]))
 triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][9]))
 triggers.push(new Trigger(carCanvas, road.borders[0][7], {x: lerp(road.borders[1][9].x, road.borders[1][8].x, 2/5), y: lerp(road.borders[1][9].y, road.borders[1][8].y, 2/5)}))
-triggers.push(new Trigger(carCanvas, road.borders[0][7], {x: lerp(road.borders[1][10].x, road.borders[1][9].x, 4/6), y: lerp(road.borders[1][10].y, road.borders[1][9].y, 4/6)}))
-triggers.push(new Trigger(carCanvas, road.borders[0][7], {x: lerp(road.borders[1][10].x, road.borders[1][9].x, 2/6), y: lerp(road.borders[1][10].y, road.borders[1][9].y, 2/6)}))
-triggers.push(new Trigger(carCanvas, road.borders[0][7], road.borders[1][10]))
+triggers.push(new Trigger(carCanvas, {x: lerp(road.borders[0][7].x, road.borders[0][8].x, 4/6), y: lerp(road.borders[0][7].y, road.borders[0][8].y, 4/6)}, {x: lerp(road.borders[1][9].x, road.borders[1][10].x, 4/6), y: lerp(road.borders[1][9].y, road.borders[1][10].y, 4/6)}))
+triggers.push(new Trigger(carCanvas, {x: lerp(road.borders[0][7].x, road.borders[0][8].x, 2/6), y: lerp(road.borders[0][7].y, road.borders[0][8].y, 2/6)}, {x: lerp(road.borders[1][9].x, road.borders[1][10].x, 2/6), y: lerp(road.borders[1][9].y, road.borders[1][10].y, 2/6)}))
 triggers.push(new Trigger(carCanvas, road.borders[0][8], road.borders[1][10]))
+triggers.push(new Trigger(carCanvas, road.borders[0][9], road.borders[1][11]))
 
+triggers.push(new Trigger(carCanvas, road.borders[0][12], road.borders[1][13]))
+triggers.push(new Trigger(carCanvas, road.borders[0][13], road.borders[1][14]))
 
 const save = () => {
   localStorage.setItem('bestBrain', JSON.stringify(bestCar.brain));
